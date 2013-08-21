@@ -1,0 +1,35 @@
+#!/bin/bash
+
+CMD="${0##*/}"
+LOG="$HOME/.breaker.log"
+touch "${LOG}"
+
+case "${CMD}" in
+	smoke)
+	  export HANDLER="[SMOKE]"
+	  ;;
+	lunch)
+	  export HANDLER="[LUNCH]"
+	  ;;
+esac
+
+if [ "${1}" ]; then {
+	case "${1}" in
+	summary)
+	  echo "Breaker Summary; last 10"
+	  tail -10 "${LOG}"
+	  ;;
+	*)
+	  echo "Usage: [smoke|lunch] [summary]"
+	  ;;
+	esac
+exit 0
+}; fi
+
+echo "Hit that break!!! Press any key when you get back."
+DATE="$(date)"
+open -a /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app&
+TIME=`(time read -n 1) 2>&1 | grep real|cut -d ' ' -f2`
+echo "${HANDLER} ${TIME} starting on ${DATE}" >> "${LOG}"
+echo "Welcome back!"
+tail -1 "${LOG}"
