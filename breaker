@@ -11,6 +11,9 @@ case "${CMD}" in
 	lunch)
 	  export HANDLER="[LUNCH]"
 	  ;;
+	*)
+	  echo "Did you know you can symlink breaker to 'smoke' and 'lunch' to change beahavior?"
+	  export HANDLER="[BREAK]"
 esac
 
 if [ "${1}" ]; then {
@@ -27,6 +30,7 @@ exit 0
 }; fi
 
 echo "Hit that break!!! Press any key when you get back."
+$(${SCREENSAVER})
 DATE="$(date)"
 open -a /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app&
 TIME=`(time read -n 1) 2>&1 | grep real|cut -d ' ' -f2`
