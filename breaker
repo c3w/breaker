@@ -34,7 +34,6 @@ function whileDo {
 		if $( ps uaxww|grep ScreenSaverEngine|grep -v grep>/dev/null ); then {
 			sleep 5
 		} else {
-			echo out
 			break
 		}; fi
 	}; done
@@ -49,10 +48,10 @@ if [ "${DATE_HOUR}" == "${LAST_HOUR}" ]; then {
 }; fi
 
 
-echo "Hit that break!!! Press any key when you get back."
+echo "Hit that break!!!"
 DATE="$(date)"
 open -a /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app&
-TIME=$(whileDo)
+TIME=`(time whileDo) 2>&1 | grep real|awk '{print $2}'`
 echo ${TIME}
 echo "${HANDLER} ${TIME} starting on ${DATE} and ending on $(date)" >> "${LOG}"
 echo "Welcome back!"
