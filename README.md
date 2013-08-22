@@ -4,7 +4,7 @@ BREAKER c3w@juicypop.net
 
 	// lauches screen saver and starts counting
 
-	// hit any key upon return to stop breaker
+	// NOW auto exits when ScreenSaverEngine stops
 
 	// symlink smoke and lunch to breaker to control its logging behaivior
 	// or run `breaker` for a generic break
