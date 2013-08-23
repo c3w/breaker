@@ -1,0 +1,8 @@
+Breaker OSX
+
+	Open Terminal and "mkdir ~/bin"
+	Copy breaker script to ~/bin
+	ln -s ~/bin/breaker ~/bin/smoke
+	ln -s ~/bin/breaker ~/bin/lunch
+
+	Drag the three(3) applications to your Desktop and have fun!
