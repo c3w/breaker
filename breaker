@@ -20,12 +20,16 @@ if [ "${1}" ]; then {
 	summary)
 	  echo "Breaker Summary; last 10"
 	  tail -10 "${LOG}"
+	  exit
+	  ;;
+	bypass)
+	  echo "bypassing 1hr limit"
 	  ;;
 	*)
 	  echo "Usage: [smoke|lunch] [summary]"
+	  exit
 	  ;;
 	esac
-exit 0
 }; fi
 
 
@@ -42,17 +46,24 @@ function whileDo {
 DATE_HOUR=$(date +"%H")
 LAST_HOUR=$(tail -1 ~/.breaker.log |sed -e "s/.*ending on.*\([0-9][0-9]\):\([0-9][0-9]:[0-9][0-9]\).*/\1/")
 if [ "${DATE_HOUR}" == "${LAST_HOUR}" ]; then {
-	echo "[2J[1;31mYou've already taken a break this hour!  Get back to work.[0m"
+	#echo "[2J[1;31mYou've already taken a break this hour!  Get back to work.[0m"
+	if [ !  "${1}" == "bypass" ]; then {
+	osascript -e 'tell app "Terminal" to display dialog "You have already taken a break this hour! Get back to work."'
 	tail -1 "${LOG}"
 	exit
+	}; fi
 }; fi
 
 
 echo "Hit that break!!!"
+#osascript -e 'tell app "Terminal" to display dialog "Hit that Break!!!"' &
 DATE="$(date)"
 open -a /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app&
+sleep 1
 TIME=`(time whileDo) 2>&1 | grep real|awk '{print $2}'`
 echo ${TIME}
 echo "${HANDLER} ${TIME} starting on ${DATE} and ending on $(date)" >> "${LOG}"
 echo "Welcome back!"
-tail -1 "${LOG}"
+BREAKLINE=$(tail -1 "${LOG}")
+echo ${BREAKLINE}
+#osascript -e 'tell app "Terminal" to display dialog "${BREAKLINE}"'
